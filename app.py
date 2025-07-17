@@ -17,11 +17,19 @@ cur = conn.cursor()
 
 @app.route('/')
 def home():
-    if "user" not in session:
+    if "user_email" not in session:
         return redirect("/login")
+
+    # Fetch student details
+    cur.execute("SELECT name, email, college_name FROM students WHERE email = %s", (session["user_email"],))
+    student = cur.fetchone()
+
+    # Fetch notes (optional or course list logic)
     cur.execute("SELECT * FROM notes")
     notes = cur.fetchall()
-    return render_template("index.html", notes=notes)
+
+    return render_template("index.html", student=student, notes=notes)
+
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -58,13 +66,14 @@ def login():
         user = cur.fetchone()
 
         if user:
-            session["user"] = user[1]  # Save name in session
+            session["user_email"] = user[2]  # user[2] = email
             return redirect('/')
         else:
             flash("Invalid credentials", "danger")
             return redirect('/login')
 
     return render_template("login.html")
+
 
 @app.route('/logout')
 def logout():
