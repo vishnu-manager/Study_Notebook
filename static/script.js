@@ -1,3 +1,4 @@
+<script>
 function showSubjects(branch) {
     const subjectsByYear = {
         CSE: {
@@ -28,40 +29,47 @@ function showSubjects(branch) {
 
     const container = document.getElementById("subjectContainer");
     container.innerHTML = `<h2>${branch} Subjects</h2>`;
-
+    
     const years = subjectsByYear[branch];
+
     for (let year in years) {
-        const section = document.createElement("div");
-        section.innerHTML = `<h3>${year}</h3>`;
+        const yearSection = document.createElement("div");
+        yearSection.className = "year-section";
+        yearSection.innerHTML = `<h3>${year}</h3>`;
 
         const ul = document.createElement("ul");
+        ul.className = "subject-list";
 
         years[year].forEach(subject => {
             const li = document.createElement("li");
-            li.style.cursor = "pointer";
-            li.style.color = "blue";
             li.textContent = subject;
+            li.className = "subject-item";
+
             li.onclick = function () {
-                const subjectPDF = `/static/notes/${branch}/${year}/${subject}.pdf`;
-                fetch(subjectPDF)
+                const encodedSubject = encodeURIComponent(subject);
+                const pdfURL = `/static/notes/${branch}/${year}/${encodedSubject}.pdf`;
+
+                fetch(pdfURL)
                     .then(response => {
                         if (response.ok) {
-                            document.getElementById("pdfViewer").innerHTML =
-                                `<iframe src="${subjectPDF}" width="100%" height="600px"></iframe>`;
+                            document.getElementById("pdfViewer").innerHTML = `
+                                <iframe src="${pdfURL}" width="100%" height="600px" frameborder="0"></iframe>`;
                         } else {
-                            document.getElementById("pdfViewer").innerHTML =
-                                `<p style="color:red;">PDF for <b>${subject}</b> is not available right now.</p>`;
+                            document.getElementById("pdfViewer").innerHTML = `
+                                <p class="error-text">PDF for <b>${subject}</b> is not available.</p>`;
                         }
                     })
-                    .catch(error => {
-                        document.getElementById("pdfViewer").innerHTML =
-                            `<p style="color:red;">Error loading <b>${subject}</b>: ${error}</p>`;
+                    .catch(err => {
+                        document.getElementById("pdfViewer").innerHTML = `
+                            <p class="error-text">Error loading <b>${subject}</b>: ${err}</p>`;
                     });
             };
+
             ul.appendChild(li);
         });
 
-        section.appendChild(ul);
-        container.appendChild(section);
+        yearSection.appendChild(ul);
+        container.appendChild(yearSection);
     }
 }
+</script>
