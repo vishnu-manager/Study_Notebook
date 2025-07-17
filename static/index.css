@@ -165,6 +165,22 @@ h1 {
     color: red;
     cursor: pointer;
 }
+.logout-button {
+  width: 100%;
+  padding: 10px;
+  background-color: #d9534f;
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+  border-radius: 5px;
+  margin-top: 10px;
+  transition: background-color 0.3s ease;
+}
+
+.logout-button:hover {
+  background-color: #c9302c;
+}
 
 
 /* Responsive */
