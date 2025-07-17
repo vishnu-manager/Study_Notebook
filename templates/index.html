@@ -1,46 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Study Notebook Dashboard</title>
-  <link rel="stylesheet" href="/static/index.css">
+  <link rel="stylesheet" href="/static/index.css" />
 </head>
 <body>
   <h1>📚 Study Notebook Dashboard</h1>
 
   <div class="container">
-    <!-- Left Sidebar: Student Profile + Courses -->
+    <!-- Sidebar -->
     <div class="sidebar">
-      <!-- Profile Image -->
-      <img src="/static/default_profile.png" alt="Profile Picture" class="profile-pic">
-
-      <!-- Auto-fetched student info -->
+      <img src="/static/default_profile.png" alt="Profile Picture" class="profile-pic" />
       <div class="profile-info">
-        <h2>{{ student[0] }}</h2> <!-- Name -->
-        <p><strong>College:</strong> {{ student[2] }}</p> <!-- College -->
-        <p><strong>Email:</strong> {{ student[1] }}</p> <!-- Email -->
+        <h2>{{ student[0] }}</h2>
+        <p><strong>College:</strong> {{ student[2] }}</p>
+        <p><strong>Email:</strong> {{ student[1] }}</p>
       </div>
 
-        <div class="course-list">
-            <h3>Courses</h3>
-            <ul>
-                <li onclick="showSubjects('CSE')">CSE</li>
-                <li onclick="showSubjects('CIVIL')">CIVIL</li>
-                <li onclick="showSubjects('MECH')">MECH</li>
-                <li onclick="showSubjects('EEE')">EEE</li>
-            </ul>
-        </div>
+      <div class="course-list">
+        <h3>Courses</h3>
+        <ul>
+          <li onclick="showSubjects('CSE')">CSE</li>
+          <li onclick="showSubjects('CIVIL')">CIVIL</li>
+          <li onclick="showSubjects('MECH')">MECH</li>
+          <li onclick="showSubjects('EEE')">EEE</li>
+        </ul>
+      </div>
     </div>
 
-    <!-- Right Side: Subjects -->
+    <!-- Right Panel -->
     <div class="right-panel">
-        <div id="pdfViewer" class="pdf-viewer"></div>
-
-            <h2>Select a course to view subjects</h2>
-        </div>
+      <div id="subjectContainer">
+        <h2>Select a course to view subjects</h2>
+      </div>
+      <div id="pdfViewer" class="pdf-viewer"></div>
     </div>
-</div>
+  </div>
 
-<script src="{{ url_for('static', filename='script.js') }}"></script>
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>
