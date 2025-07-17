@@ -93,40 +93,40 @@ h1 {
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
-/* Subject List */
-#subjectContainer h3 {
-  margin-top: 20px;
-  color: #1976d2;
-  font-size: 22px;
-  margin-bottom: 15px;
+.year-section {
+    margin-bottom: 25px;
+    padding: 10px;
+    background-color: #f7f9fc;
+    border-radius: 8px;
+    box-shadow: 0 0 5px rgba(0,0,0,0.1);
 }
 
-#subjectContainer ul {
-  list-style: none;
-  padding: 0;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: 15px;
+.subject-list {
+    list-style-type: none;
+    padding-left: 15px;
 }
 
-#subjectContainer li {
-  background-color: #ffffff;
-  border: 1px solid #d0e3ff;
-  border-radius: 10px;
-  padding: 15px;
-  font-size: 16px;
-  color: #1a237e;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-  transition: all 0.2s ease-in-out;
-  text-align: center;
-  cursor: pointer;
+.subject-item {
+    padding: 8px 12px;
+    margin: 6px 0;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    background-color: #fff;
+    color: #007bff;
+    cursor: pointer;
+    transition: all 0.3s ease;
 }
 
-#subjectContainer li:hover {
-  background-color: #e3f2fd;
-  color: #0d47a1;
-  transform: translateY(-3px);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+.subject-item:hover {
+    background-color: #e8f0fe;
+    color: #0056b3;
+    transform: scale(1.02);
+}
+
+.error-text {
+    color: red;
+    font-weight: 500;
+    padding: 10px;
 }
 
 /* Responsive */
