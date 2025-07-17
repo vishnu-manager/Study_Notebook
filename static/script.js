@@ -32,7 +32,36 @@ function showSubjects(branch) {
     const years = subjectsByYear[branch];
     for (let year in years) {
         const section = document.createElement("div");
-        section.innerHTML = `<h3>${year}</h3><ul>${years[year].map(subject => `<li>${subject}</li>`).join('')}</ul>`;
+        section.innerHTML = `<h3>${year}</h3>`;
+
+        const ul = document.createElement("ul");
+
+        years[year].forEach(subject => {
+            const li = document.createElement("li");
+            li.style.cursor = "pointer";
+            li.style.color = "blue";
+            li.textContent = subject;
+            li.onclick = function () {
+                const subjectPDF = `/static/notes/${branch}/${year}/${subject}.pdf`;
+                fetch(subjectPDF)
+                    .then(response => {
+                        if (response.ok) {
+                            document.getElementById("pdfViewer").innerHTML =
+                                `<iframe src="${subjectPDF}" width="100%" height="600px"></iframe>`;
+                        } else {
+                            document.getElementById("pdfViewer").innerHTML =
+                                `<p style="color:red;">PDF for <b>${subject}</b> is not available right now.</p>`;
+                        }
+                    })
+                    .catch(error => {
+                        document.getElementById("pdfViewer").innerHTML =
+                            `<p style="color:red;">Error loading <b>${subject}</b>: ${error}</p>`;
+                    });
+            };
+            ul.appendChild(li);
+        });
+
+        section.appendChild(ul);
         container.appendChild(section);
     }
 }
