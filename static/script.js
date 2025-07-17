@@ -85,3 +85,7 @@ function closeModal() {
   modal.style.display = "none";
   pdfFrame.src = "";
 }
+function logout() {
+  // Redirect to logout endpoint or homepage
+  window.location.href = "/logout";  // Or wherever your logout logic is
+}
