@@ -1,55 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Study Notebook Dashboard</title>
-  <link rel="stylesheet" href="/static/index.css">
+    <meta charset="UTF-8">
+    <title>Student Notebook</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
 </head>
 <body>
-  <h1>📚 Study Notebook Dashboard</h1>
+<div class="container">
+    <!-- Left Side: Profile & Courses -->
+    <div class="left-panel">
+        <div class="profile">
+            <img src="{{ url_for('static', filename='profile.png') }}" alt="Profile Image" class="profile-pic">
+            <h2>{{ student.name }}</h2>
+            <p><strong>College:</strong> {{ student.college }}</p>
+            <p><strong>Email:</strong> {{ student.email }}</p>
+        </div>
 
-  <div class="container">
-    <!-- Left Sidebar: Student Profile + Courses -->
-    <div class="sidebar">
-      <!-- Profile Image -->
-      <img src="/static/default_profile.png" alt="Profile Picture" class="profile-pic">
-
-      <!-- Auto-fetched student info -->
-      <div class="profile-info">
-        <h2>{{ student[0] }}</h2> <!-- Name -->
-        <p><strong>College:</strong> {{ student[2] }}</p> <!-- College -->
-        <p><strong>Email:</strong> {{ student[1] }}</p> <!-- Email -->
-      </div>
-
-      <!-- Course List -->
-      <div class="courses">
-        <h3>My Courses</h3>
-        <ul>
-          <li onclick="loadPDF('maths.pdf')">Mathematics</li>
-          <li onclick="loadPDF('physics.pdf')">Physics</li>
-          <li onclick="loadPDF('chemistry.pdf')">Chemistry</li>
-          <li onclick="loadPDF('cse.pdf')">Computer Science</li>
-        </ul>
-      </div>
-
-      <!-- Logout Button -->
-      <div style="text-align: center; margin-top: 20px;">
-        <a href="/logout" style="color: red; text-decoration: none;">🚪 Logout</a>
-      </div>
+        <div class="course-list">
+            <h3>Courses</h3>
+            <ul>
+                <li onclick="showSubjects('CSE')">CSE</li>
+                <li onclick="showSubjects('CIVIL')">CIVIL</li>
+                <li onclick="showSubjects('MECH')">MECH</li>
+                <li onclick="showSubjects('EEE')">EEE</li>
+            </ul>
+        </div>
     </div>
 
-    <!-- Right PDF Viewer -->
-    <div class="pdf-viewer">
-      <iframe id="pdfFrame" src="/static/pdfs/maths.pdf"></iframe>
+    <!-- Right Side: Subjects -->
+    <div class="right-panel">
+        <div id="subjectContainer">
+            <h2>Select a course to view subjects</h2>
+        </div>
     </div>
-  </div>
+</div>
 
-  <!-- JavaScript to load PDF dynamically -->
-  <script>
-    function loadPDF(filename) {
-      document.getElementById("pdfFrame").src = "/static/pdfs/" + filename;
-    }
-  </script>
+<script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>
-
