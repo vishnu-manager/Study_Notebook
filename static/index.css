@@ -1,107 +1,65 @@
 body {
-  font-family: Arial, sans-serif;
-  background-color: #f5f7fa;
-  color: #333;
-  margin: 0;
-  padding: 20px;
-}
-
-h1 {
-  text-align: center;
-  margin-bottom: 20px;
-  color: #2c3e50;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
 }
 
 .container {
-  display: flex;
-  flex-direction: row;
-  gap: 20px;
+    display: flex;
+    height: 100vh;
+    flex-direction: row;
 }
 
-/* Sidebar */
-.sidebar {
-  width: 30%;
-  background: #fff;
-  border-radius: 10px;
-  padding: 20px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+.left-panel {
+    width: 30%;
+    background-color: #f0f0f0;
+    padding: 20px;
+    overflow-y: auto;
+    border-right: 1px solid #ccc;
+}
+
+.profile {
+    text-align: center;
+    margin-bottom: 30px;
 }
 
 .profile-pic {
-  width: 120px;
-  height: 120px;
-  border-radius: 50%;
-  object-fit: cover;
-  display: block;
-  margin: 0 auto;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
 }
 
-.profile-info {
-  text-align: center;
-  margin-top: 15px;
+.course-list ul {
+    list-style: none;
+    padding: 0;
 }
 
-.profile-info h2 {
-  margin-bottom: 5px;
-  font-size: 1.5em;
+.course-list ul li {
+    background-color: #ddd;
+    margin: 10px 0;
+    padding: 10px;
+    cursor: pointer;
+    text-align: center;
+    border-radius: 8px;
+    transition: background 0.3s;
 }
 
-.profile-info p {
-  margin: 3px 0;
-  color: #555;
+.course-list ul li:hover {
+    background-color: #bbb;
 }
 
-.courses {
-  margin-top: 30px;
+.right-panel {
+    width: 70%;
+    padding: 20px;
+    overflow-y: auto;
 }
 
-.courses h3 {
-  border-bottom: 1px solid #ccc;
-  padding-bottom: 5px;
-}
-
-.courses ul {
-  list-style: none;
-  padding-left: 0;
-}
-
-.courses li {
-  margin: 10px 0;
-  padding: 10px;
-  background-color: #eaf2fb;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-.courses li:hover {
-  background-color: #cde6ff;
-}
-
-/* PDF Viewer */
-.pdf-viewer {
-  width: 70%;
-}
-
-.pdf-viewer iframe {
-  width: 100%;
-  height: 85vh;
-  border: none;
-  border-radius: 10px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-}
-
-/* Mobile Responsive */
 @media (max-width: 768px) {
-  .container {
-    flex-direction: column;
-  }
-
-  .sidebar, .pdf-viewer {
-    width: 100%;
-  }
-
-  .pdf-viewer iframe {
-    height: 60vh;
-  }
+    .container {
+        flex-direction: column;
+    }
+    .left-panel, .right-panel {
+        width: 100%;
+    }
 }
