@@ -1,1 +1,75 @@
+/* static/styles.css */
+
+body {
+  font-family: Arial, sans-serif;
+  background: linear-gradient(to right, #6dd5fa, #2980b9);
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  margin: 0;
+}
+
+h2 {
+  margin-bottom: 20px;
+  font-size: 28px;
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+}
+
+form {
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 30px 40px;
+  border-radius: 12px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(5px);
+}
+
+input[type="email"],
+input[type="password"] {
+  width: 100%;
+  padding: 12px 15px;
+  margin: 10px 0;
+  border: none;
+  border-radius: 8px;
+  background-color: #ffffffcc;
+  font-size: 16px;
+  color: #333;
+}
+
+input::placeholder {
+  color: #888;
+}
+
+button {
+  width: 100%;
+  padding: 12px;
+  margin-top: 10px;
+  border: none;
+  border-radius: 8px;
+  background-color: #1abc9c;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #16a085;
+}
+
+p {
+  margin-top: 15px;
+  font-size: 14px;
+}
+
+a {
+  color: #f1c40f;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
 
