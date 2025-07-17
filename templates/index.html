@@ -1,20 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Student Notebook</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
+  <meta charset="UTF-8">
+  <title>Study Notebook Dashboard</title>
+  <link rel="stylesheet" href="/static/index.css">
 </head>
 <body>
-<div class="container">
-    <!-- Left Side: Profile & Courses -->
-    <div class="left-panel">
-        <div class="profile">
-            <img src="{{ url_for('static', filename='profile.png') }}" alt="Profile Image" class="profile-pic">
-            <h2>{{ student.name }}</h2>
-            <p><strong>College:</strong> {{ student.college }}</p>
-            <p><strong>Email:</strong> {{ student.email }}</p>
-        </div>
+  <h1>📚 Study Notebook Dashboard</h1>
+
+  <div class="container">
+    <!-- Left Sidebar: Student Profile + Courses -->
+    <div class="sidebar">
+      <!-- Profile Image -->
+      <img src="/static/default_profile.png" alt="Profile Picture" class="profile-pic">
+
+      <!-- Auto-fetched student info -->
+      <div class="profile-info">
+        <h2>{{ student[0] }}</h2> <!-- Name -->
+        <p><strong>College:</strong> {{ student[2] }}</p> <!-- College -->
+        <p><strong>Email:</strong> {{ student[1] }}</p> <!-- Email -->
+      </div>
 
         <div class="course-list">
             <h3>Courses</h3>
