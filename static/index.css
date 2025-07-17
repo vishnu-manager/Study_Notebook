@@ -97,23 +97,36 @@ h1 {
 #subjectContainer h3 {
   margin-top: 20px;
   color: #1976d2;
+  font-size: 22px;
+  margin-bottom: 15px;
 }
 
 #subjectContainer ul {
-  list-style-type: none;
-  padding-left: 20px;
+  list-style: none;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 15px;
 }
 
 #subjectContainer li {
-  padding: 6px 0;
-  color: #1565c0;
+  background-color: #ffffff;
+  border: 1px solid #d0e3ff;
+  border-radius: 10px;
+  padding: 15px;
+  font-size: 16px;
+  color: #1a237e;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  transition: all 0.2s ease-in-out;
+  text-align: center;
   cursor: pointer;
-  transition: color 0.2s;
 }
 
 #subjectContainer li:hover {
+  background-color: #e3f2fd;
   color: #0d47a1;
-  text-decoration: underline;
+  transform: translateY(-3px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
 }
 
 /* Responsive */
