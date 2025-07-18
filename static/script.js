@@ -25,67 +25,37 @@ const subjectsByBranch = {
   }
 };
 
-function showSubjects(branch) {
-  const subjectArea = document.getElementById('subjectArea');
-  subjectArea.innerHTML = `<h2>${branch} Subjects</h2>`;
-
-  const subjects = subjectsByBranch[branch];
-  for (const year in subjects) {
-    const yearDiv = document.createElement("div");
-    yearDiv.innerHTML = `<h3 class='year-title'>${year}</h3>`;
-    const listDiv = document.createElement("div");
-    listDiv.classList.add("subject-list");
-
-    subjects[year].forEach(subject => {
-      const subDiv = document.createElement("div");
-      subDiv.classList.add("subject-item");
-      subDiv.innerText = subject;
-      subDiv.onclick = () => openPDF(branch, year, subject);
-      listDiv.appendChild(subDiv);
-    });
-
-    yearDiv.appendChild(listDiv);
-    subjectArea.appendChild(yearDiv);
-  }
-}
-
-function openPDF(branch, year, subject) {
-  const cleanBranch = branch.replace(/\s+/g, '_');
-  const cleanYear = year.replace(/\s+/g, '_');
-  const cleanSubject = subject.replace(/\s+/g, '_');
-  const fileName = `${cleanBranch}_${cleanYear}_${cleanSubject}.pdf`;
-  const filePath = `/static/pdfs/${fileName}`;
-
-  // Try to fetch PDF to check if it exists
-  fetch(filePath, { method: "HEAD" })
-    .then(response => {
-      if (response.ok) {
-        showPDFModal(filePath);
-      } else {
-        alert("Coming Soon: PDF not available yet.");
+function showSubjects(course) {
+  fetch(`/get_pdfs/${course}`)
+    .then(response => response.json())
+    .then(data => {
+      const subjectArea = document.getElementById('subjectArea');
+      subjectArea.innerHTML = `<h2>${course} Subjects</h2>`;
+      if (data.length === 0) {
+        subjectArea.innerHTML += "<p>No PDFs uploaded for this course.</p>";
+        return;
       }
-    })
-    .catch(() => {
-      alert("Coming Soon: PDF not available yet.");
+      data.forEach(item => {
+        const link = document.createElement('a');
+        link.textContent = `${item.subject} (${item.year})`;
+        link.href = '#';
+        link.onclick = () => openModal(item.pdf_url);
+        link.style.display = 'block';
+        subjectArea.appendChild(link);
+      });
     });
 }
 
-function showPDFModal(filePath) {
-  const modal = document.getElementById("popupModal");
-  const pdfFrame = document.getElementById("pdfFrame");
-
-  pdfFrame.src = filePath;
-  modal.style.display = "block";
+function openModal(pdfUrl) {
+  document.getElementById('pdfFrame').src = pdfUrl;
+  document.getElementById('pdfModal').style.display = 'block';
 }
 
 function closeModal() {
-  const modal = document.getElementById("popupModal");
-  const pdfFrame = document.getElementById("pdfFrame");
-
-  modal.style.display = "none";
-  pdfFrame.src = "";
+  document.getElementById('pdfModal').style.display = 'none';
+  document.getElementById('pdfFrame').src = '';
 }
+
 function logout() {
-  // Redirect to logout endpoint or homepage
-  window.location.href = "/logout";  // Or wherever your logout logic is
+  window.location.href = "/logout";
 }
