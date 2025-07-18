@@ -73,6 +73,52 @@ def login():
             return redirect('/login')
 
     return render_template("login.html")
+@app.route("/admin_register", methods=["GET", "POST"])
+def admin_register():
+    if request.method == "POST":
+        name = request.form["name"]
+        email = request.form["email"]
+        password = request.form["password"]
+        confirm = request.form["confirm"]
+        code = request.form["code"]
+
+        # 1. Check password match
+        if password != confirm:
+            flash("Passwords do not match!", "error")
+            return render_template("admin_register.html")
+
+        # 2. Check for valid admin code
+        if code != "MVVR":
+            flash("Invalid Admin Code. Please enter correct code.", "error")
+            return render_template("admin_register.html")
+
+        hashed_password = generate_password_hash(password)
+
+        conn = get_db_connection()
+        cur = conn.cursor()
+
+        # 3. Check if email is already used
+        cur.execute("SELECT * FROM admins WHERE email = %s", (email,))
+        existing_admin = cur.fetchone()
+        if existing_admin:
+            flash("Email already registered!", "error")
+            cur.close()
+            conn.close()
+            return render_template("admin_register.html")
+
+        # 4. Insert admin data
+        cur.execute("""
+            INSERT INTO admins (name, email, password, code)
+            VALUES (%s, %s, %s, %s)
+        """, (name, email, hashed_password, code))
+        conn.commit()
+        cur.close()
+        conn.close()
+
+        flash("Registration successful! Please login.", "success")
+        return redirect(url_for("admin_login"))
+
+    return render_template("admin_register.html")
 
 
 @app.route('/logout')
