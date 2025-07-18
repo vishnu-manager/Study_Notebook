@@ -1,20 +1,58 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Register</title>
-    <link rel="stylesheet" href="/static/register.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Student Registration</title>
+  <link rel="stylesheet" href="/static/register.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
 </head>
 <body>
-    <h2>Student Registration</h2>
+  <div class="register-card">
+    <h2>Registration</h2>
     <form method="POST">
-        <input type="text" name="name" placeholder="Your Name" required><br>
-        <input type="email" name="email" placeholder="Email" required><br>
-        <input type="password" name="password" placeholder="Password" required><br>
-        <input type="password" name="confirm" placeholder="Confirm Password" required><br>
-        <input type="text" name="college" placeholder="College Name" required><br>
-        <button type="submit">Register</button>
+
+      <div class="input-radio">
+        <label><input type="radio" name="user_type" value="student" checked> Personal</label>
+        <label><input type="radio" name="user_type" value="company"> Company</label>
+      </div>
+
+      <div class="input-group">
+        <i class="fas fa-user"></i>
+        <input type="text" name="name" placeholder="Name" required />
+      </div>
+
+      <div class="input-group">
+        <i class="fas fa-envelope"></i>
+        <input type="email" name="email" placeholder="Email" required />
+      </div>
+
+      <div class="input-group">
+        <i class="fas fa-lock"></i>
+        <input type="password" name="password" placeholder="Password" required />
+      </div>
+
+      <div class="input-group">
+        <i class="fas fa-lock"></i>
+        <input type="password" name="confirm" placeholder="Confirm Password" required />
+      </div>
+
+      <div class="input-group">
+        <i class="fas fa-school"></i>
+        <input type="text" name="college" placeholder="College Name" required />
+      </div>
+
+      <div class="input-radio">
+        <label><input type="radio" name="gender" value="male" checked> Male</label>
+        <label><input type="radio" name="gender" value="female"> Female</label>
+      </div>
+
+      <p class="terms">By clicking Register, you agree to our <a href="#">Privacy Policy</a>.</p>
+
+      <button type="submit">Submit</button>
     </form>
-    <p>Already have an account? <a href="/login">Login</a></p>
+
+    <p class="login-link">Already have an account? <a href="/login">Login</a></p>
+  </div>
 </body>
 </html>
-
