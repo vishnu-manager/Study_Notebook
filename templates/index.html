@@ -1,18 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Study Notebook Dashboard</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="/static/index.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>📚 Study Notebook Dashboard</title>
+  <link rel="stylesheet" href="/static/index.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 </head>
 <body>
-  <h1>📚 Study Notebook Dashboard</h1>
-
-  <div class="container">
+  <div class="dashboard">
     <!-- Sidebar -->
     <div class="sidebar">
-      <img src="/static/default_profile.png" alt="Profile Picture" class="profile-pic">
+      <img src="/static/default_profile.png" alt="Profile" class="profile-pic" />
       <div class="profile-info">
         <h2>{{ student[0] }}</h2>
         <p><strong>College:</strong> {{ student[2] }}</p>
@@ -22,80 +21,71 @@
       <div class="course-list">
         <h3>Courses</h3>
         <ul>
-          <li onclick="showSubjects('CSE')">CSE</li>
-          <li onclick="showSubjects('CIVIL')">CIVIL</li>
-          <li onclick="showSubjects('MECH')">MECH</li>
-          <li onclick="showSubjects('EEE')">EEE</li>
+          <li onclick="showSubjects('CSE')">💻 CSE</li>
+          <li onclick="showSubjects('CIVIL')">🏗️ CIVIL</li>
+          <li onclick="showSubjects('MECH')">⚙️ MECH</li>
+          <li onclick="showSubjects('EEE')">🔌 EEE</li>
         </ul>
-        <hr style="margin: 20px 0;">
         <button onclick="logout()" class="logout-button">🚪 Logout</button>
       </div>
     </div>
 
     <!-- Main Panel -->
-    <div class="right-panel">
-      <div id="subjectArea">
-        <h2>Select a course to view subjects</h2>
-      </div>
+    <div class="main-panel" id="subjectArea">
+      <h2>📘 Select a course to view subjects</h2>
     </div>
   </div>
 
-  <!-- PDF Viewer Modal -->
-  <div id="pdfModal" class="modal" style="display: none;">
+  <!-- Modal Viewer -->
+  <div class="modal" id="pdfModal">
     <div class="modal-content">
-      <span class="close-btn" onclick="closeModal()" style="cursor: pointer;">&times;</span>
+      <span class="close-btn" onclick="closeModal()">&times;</span>
       <iframe id="pdfFrame" src="" width="100%" height="500px" frameborder="0"></iframe>
     </div>
   </div>
 
-  <!-- JavaScript inside HTML -->
+  <!-- Script -->
   <script>
     function showSubjects(course) {
       fetch(`/get_pdfs/${course}`)
-        .then(response => response.json())
+        .then(res => res.json())
         .then(data => {
-          const subjectArea = document.getElementById('subjectArea');
-          subjectArea.innerHTML = `<h2>${course} Subjects</h2>`;
-
+          const area = document.getElementById('subjectArea');
+          area.innerHTML = `<h2>${course} Subjects</h2>`;
           if (data.length === 0) {
-            subjectArea.innerHTML += "<p>No PDFs uploaded for this course.</p>";
+            area.innerHTML += "<p>No PDFs found for this course.</p>";
             return;
           }
 
-          // Group by year
-          const groupedByYear = {};
+          const grouped = {};
           data.forEach(item => {
-            if (!groupedByYear[item.year]) {
-              groupedByYear[item.year] = [];
-            }
-            groupedByYear[item.year].push(item);
+            grouped[item.year] = grouped[item.year] || [];
+            grouped[item.year].push(item);
           });
 
-          for (const year in groupedByYear) {
-            const yearHeading = document.createElement('h3');
-            yearHeading.textContent = year;
-            subjectArea.appendChild(yearHeading);
+          for (let year in grouped) {
+            const yearHead = document.createElement('h3');
+            yearHead.textContent = year;
+            area.appendChild(yearHead);
 
-            groupedByYear[year].forEach(item => {
+            grouped[year].forEach(item => {
               const link = document.createElement('a');
-              link.textContent = item.subject;
-              link.href = '#';
+              link.textContent = `📄 ${item.subject}`;
+              link.href = "#";
               link.onclick = () => openModal(item.pdf_url);
-              link.style.display = 'block';
-              link.style.marginLeft = '20px';
-              subjectArea.appendChild(link);
+              link.className = "pdf-link";
+              area.appendChild(link);
             });
           }
         })
-        .catch(err => {
-          console.error("Error fetching PDFs:", err);
-          document.getElementById('subjectArea').innerHTML = "<p>Failed to load subjects. Try again later.</p>";
+        .catch(() => {
+          document.getElementById('subjectArea').innerHTML = "<p>Something went wrong. Try again later.</p>";
         });
     }
 
-    function openModal(pdfUrl) {
-      document.getElementById('pdfFrame').src = pdfUrl;
-      document.getElementById('pdfModal').style.display = 'block';
+    function openModal(url) {
+      document.getElementById('pdfFrame').src = url;
+      document.getElementById('pdfModal').style.display = 'flex';
     }
 
     function closeModal() {
