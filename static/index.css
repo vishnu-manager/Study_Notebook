@@ -1,114 +1,167 @@
-/* Reset default styling */
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', sans-serif;
 }
 
-/* Body styling */
 body {
-    display: flex;
+  background-color: #f5f7fb;
+  color: #333;
+  line-height: 1.6;
+}
+
+header {
+  background-color: #4a90e2;
+  color: white;
+  padding: 15px 20px;
+  text-align: center;
+  font-size: 1.5rem;
+}
+
+.container {
+  display: flex;
+  flex-direction: row;
+  min-height: calc(100vh - 60px);
+}
+
+.sidebar {
+  background-color: #ffffff;
+  border-right: 1px solid #ddd;
+  padding: 20px;
+  width: 260px;
+  flex-shrink: 0;
+}
+
+.profile-pic {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 15px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.profile-info {
+  text-align: center;
+}
+
+.course-list {
+  margin-top: 30px;
+}
+
+.course-list ul {
+  list-style: none;
+  padding: 0;
+}
+
+.course-list li {
+  padding: 10px;
+  background-color: #e8f0fe;
+  margin-bottom: 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.course-list li:hover {
+  background-color: #d2e3fc;
+}
+
+.logout-button {
+  width: 100%;
+  padding: 10px;
+  background-color: #ff5f5f;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.logout-button:hover {
+  background-color: #e63946;
+}
+
+.right-panel {
+  flex-grow: 1;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+#subjectArea h2 {
+  margin-bottom: 15px;
+}
+
+#subjectArea h3 {
+  margin-top: 20px;
+}
+
+#subjectArea a {
+  display: block;
+  margin-left: 20px;
+  color: #1a73e8;
+  text-decoration: none;
+  margin-bottom: 6px;
+}
+
+#subjectArea a:hover {
+  text-decoration: underline;
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 100;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0,0,0,0.5);
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background: #fff;
+  width: 90%;
+  max-width: 800px;
+  padding: 20px;
+  border-radius: 8px;
+  position: relative;
+}
+
+.close-btn {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  font-size: 24px;
+  color: #333;
+}
+
+@media (max-width: 768px) {
+  .container {
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    background: linear-gradient(to right, #f0f4f8, #d9e2ec);
-    padding: 20px;
-}
+  }
 
-/* Form container */
-form {
-    background-color: #ffffff;
-    padding: 32px;
-    border-radius: 16px;
-    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.1);
-    max-width: 420px;
+  .sidebar {
     width: 100%;
-    animation: fadeIn 0.8s ease-in-out;
-}
+    border-right: none;
+    border-bottom: 1px solid #ddd;
+  }
 
-/* Heading */
-h2 {
-    color: #2a2e35;
-    margin-bottom: 24px;
-    text-align: center;
-    font-size: 24px;
-}
+  .right-panel {
+    padding: 15px;
+  }
 
-/* Input fields */
-input[type="text"],
-input[type="email"],
-input[type="password"] {
-    width: 100%;
-    padding: 14px;
-    margin: 10px 0;
-    border: 1px solid #ccd6dd;
-    border-radius: 10px;
-    transition: 0.3s ease;
-    background-color: #f8fafc;
-}
+  .modal-content {
+    height: 80vh;
+    padding: 10px;
+  }
 
-input:focus {
-    border-color: #3b82f6;
-    outline: none;
-    background-color: #ffffff;
-}
-
-/* Button */
-button {
-    width: 100%;
-    padding: 14px;
-    background-color: #3b82f6;
-    color: #ffffff;
-    border: none;
-    border-radius: 10px;
-    font-weight: 600;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-button:hover {
-    background-color: #2563eb;
-}
-
-/* Links */
-a {
-    color: #2563eb;
-    text-decoration: none;
-    font-weight: 500;
-}
-
-a:hover {
-    text-decoration: underline;
-}
-
-/* Text */
-p {
-    margin-top: 16px;
-    text-align: center;
-    font-size: 14px;
-    color: #555;
-}
-
-/* Fade-in animation */
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-/* Responsive Design */
-@media screen and (max-width: 600px) {
-    form {
-        padding: 24px;
-    }
-
-    h2 {
-        font-size: 20px;
-    }
-
-    input, button {
-        font-size: 15px;
-    }
+  iframe {
+    height: 100%;
+  }
 }
