@@ -1,4 +1,4 @@
-/* Reset and base styling */
+/* Base Reset */
 * {
     margin: 0;
     padding: 0;
@@ -6,75 +6,74 @@
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
+/* Body Styling */
 body {
-    background: linear-gradient(to right, #e0eafc, #cfdef3);
     display: flex;
-    align-items: center;
+    flex-direction: column;
     justify-content: center;
+    align-items: center;
     min-height: 100vh;
+    background: linear-gradient(to right, #d9afd9, #97d9e1);
     padding: 16px;
 }
 
-/* Wrapper for all content */
-.container {
-    width: 100%;
-    max-width: 400px;
-    background-color: #ffffff;
-    padding: 24px;
-    border-radius: 16px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-    animation: fadeSlide 0.7s ease;
-}
-
-/* Heading styles */
+/* Headings */
 h2, h3 {
-    text-align: center;
     color: #2c3e50;
-    margin-bottom: 20px;
+    margin-bottom: 16px;
+    text-align: center;
 }
 
-/* Form styling */
+/* Form Styling */
 form {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
+    background: white;
+    padding: 24px;
+    border-radius: 12px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+    width: 100%;
+    max-width: 380px;
+    animation: slideFadeIn 0.7s ease-out;
 }
 
-/* Inputs */
+/* Input Fields */
 input[type="email"],
 input[type="password"] {
-    padding: 12px;
+    width: 100%;
+    padding: 12px 14px;
+    margin: 10px 0;
     border: 1px solid #ccc;
     border-radius: 8px;
     font-size: 16px;
-    transition: all 0.3s ease;
+    transition: 0.3s border-color ease;
 }
 
 input:focus {
-    border-color: #2980b9;
+    border-color: #3498db;
     outline: none;
 }
 
-/* Buttons */
+/* Button Styling */
 button {
+    width: 100%;
     padding: 12px;
-    background-color: #2980b9;
-    color: #fff;
+    margin-top: 12px;
+    background-color: #3498db;
+    color: white;
     border: none;
     border-radius: 8px;
-    font-size: 16px;
     font-weight: bold;
+    font-size: 16px;
     cursor: pointer;
-    transition: background 0.3s ease;
+    transition: background-color 0.3s ease;
 }
 
 button:hover {
-    background-color: #1f618d;
+    background-color: #217dbb;
 }
 
-/* Paragraph and links */
+/* Paragraphs and Links */
 p {
-    margin-top: 16px;
+    margin-top: 14px;
     text-align: center;
     color: #555;
     font-size: 14px;
@@ -92,14 +91,15 @@ a:hover {
 
 /* Divider */
 hr {
-    margin: 30px 0;
+    width: 100%;
+    margin: 32px 0 24px;
     border: none;
     height: 1px;
-    background: #ddd;
+    background-color: #ccc;
 }
 
 /* Animation */
-@keyframes fadeSlide {
+@keyframes slideFadeIn {
     from {
         opacity: 0;
         transform: translateY(30px);
@@ -110,21 +110,25 @@ hr {
     }
 }
 
-/* Responsive tweaks */
-@media (max-width: 480px) {
+/* Mobile Responsive */
+@media (max-width: 500px) {
     body {
-        padding: 12px;
+        padding: 10px;
     }
 
-    .container {
-        padding: 20px;
+    form {
+        padding: 20px 16px;
     }
 
     h2, h3 {
-        font-size: 20px;
+        font-size: 18px;
     }
 
     input, button {
         font-size: 15px;
+    }
+
+    p {
+        font-size: 13px;
     }
 }
