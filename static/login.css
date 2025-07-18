@@ -1,4 +1,9 @@
-/* static/styles.css */
+/* General Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
 body {
   font-family: Arial, sans-serif;
@@ -8,24 +13,31 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 100vh;
-  margin: 0;
+  min-height: 100vh;
+  padding: 20px;
 }
 
+/* Heading */
 h2 {
   margin-bottom: 20px;
-  font-size: 28px;
+  font-size: 5vw;
+  max-width: 90%;
+  text-align: center;
   text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
 }
 
+/* Form Container */
 form {
   background-color: rgba(255, 255, 255, 0.1);
-  padding: 30px 40px;
+  padding: 30px 5vw;
   border-radius: 12px;
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
   backdrop-filter: blur(5px);
+  width: 100%;
+  max-width: 400px;
 }
 
+/* Input Fields */
 input[type="email"],
 input[type="password"] {
   width: 100%;
@@ -42,6 +54,7 @@ input::placeholder {
   color: #888;
 }
 
+/* Button */
 button {
   width: 100%;
   padding: 12px;
@@ -59,9 +72,11 @@ button:hover {
   background-color: #16a085;
 }
 
+/* Paragraph and Links */
 p {
   margin-top: 15px;
   font-size: 14px;
+  text-align: center;
 }
 
 a {
@@ -73,3 +88,17 @@ a:hover {
   text-decoration: underline;
 }
 
+/* Responsive Heading */
+@media (max-width: 480px) {
+  h2 {
+    font-size: 6vw;
+  }
+
+  form {
+    padding: 25px 20px;
+  }
+
+  button {
+    font-size: 14px;
+  }
+}
