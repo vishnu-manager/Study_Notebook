@@ -168,6 +168,24 @@ def admin_dashboard():
 @app.route('/uploads/<filename>')
 def download_pdf(filename):
     return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
+@app.route('/get_pdfs/<course>')
+def get_pdfs(course):
+    conn = get_db_connection()
+    cur = conn.cursor()
+    cur.execute("SELECT subject, year, pdf_filename FROM uploads WHERE course=%s", (course,))
+    rows = cur.fetchall()
+    cur.close()
+    conn.close()
+
+    pdfs = [
+        {
+            "subject": row[0],
+            "year": row[1],
+            "pdf_url": url_for('static', filename='uploads/' + row[2])
+        }
+        for row in rows
+    ]
+    return jsonify(pdfs)
 
 @app.route('/logout')
 def logout():
