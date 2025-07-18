@@ -1,16 +1,20 @@
-from flask import Flask, render_template, request, redirect, session, url_for, flash
+from flask import Flask, render_template, request, redirect, session, url_for, flash, send_from_directory
 import psycopg2
 import os
 from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
 app.secret_key = "supersecretkey"
-UPLOAD_FOLDER = "static/uploads"
-ALLOWED_EXTENSIONS = {'pdf'}
-MAX_FILE_SIZE = 25 * 1024 * 1024  # 25MB
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
-# PostgreSQL connection
+# Configure upload folder and max file size (25MB)
+UPLOAD_FOLDER = 'uploads'
+if not os.path.exists(UPLOAD_FOLDER):
+    os.makedirs(UPLOAD_FOLDER)
+
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.config['MAX_CONTENT_LENGTH'] = 25 * 1024 * 1024  # 25MB
+
+# PostgreSQL Database connection
 conn = psycopg2.connect(
     dbname="study_notebook",
     user="vishnu123",
@@ -20,27 +24,24 @@ conn = psycopg2.connect(
 )
 cur = conn.cursor()
 
-def allowed_file(filename):
-    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+# ---------- STUDENT ROUTES ----------
 
 @app.route('/')
 def home():
     if "user_email" not in session:
         return redirect("/login")
 
-    email = session["user_email"]
-    cur.execute("SELECT name, email, college_name, role FROM users WHERE email = %s", (email,))
-    user = cur.fetchone()
+    # Fetch student details
+    cur.execute("SELECT name, email, college_name FROM students WHERE email = %s", (session["user_email"],))
+    student = cur.fetchone()
 
-    # Fetch all uploaded PDFs
-    cur.execute("SELECT course, year, subject, filename FROM pdf_notes")
-    notes = cur.fetchall()
+    # Fetch PDFs uploaded by admin
+    cur.execute("SELECT course_name, year, subject, file_name FROM pdfs ORDER BY id DESC")
+    pdfs = cur.fetchall()
 
-    return render_template("index.html", user=user, notes=notes)
+    return render_template("index.html", student=student, pdfs=pdfs)
 
-# -----------------------------------------
-# Student & Admin Shared Registration Page
-# -----------------------------------------
+
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == "POST":
@@ -49,23 +50,16 @@ def register():
         password = request.form['password']
         confirm = request.form['confirm']
         college = request.form['college']
-        role = "student"
-
-        if "admin_code" in request.form and request.form['admin_code'] == "MVVR":
-            role = "admin"
-        elif "admin_code" in request.form and request.form['admin_code'] != "":
-            flash("Invalid admin code", "danger")
-            return redirect('/register')
 
         if password != confirm:
             flash("Passwords do not match", "danger")
             return redirect('/register')
 
         try:
-            cur.execute("INSERT INTO users (name, email, password, college_name, role) VALUES (%s, %s, %s, %s, %s)",
-                        (name, email, password, college, role))
+            cur.execute("INSERT INTO students (name, email, password, college_name) VALUES (%s, %s, %s, %s)", 
+                        (name, email, password, college))
             conn.commit()
-            flash("Registered successfully! Please login.", "success")
+            flash("Registered Successfully! Please login.", "success")
             return redirect('/login')
         except:
             flash("Email already exists", "danger")
@@ -73,53 +67,28 @@ def register():
 
     return render_template("register.html")
 
-# -----------------------------------------
-# Student Login
-# -----------------------------------------
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == "POST":
         email = request.form['email']
         password = request.form['password']
 
-        cur.execute("SELECT * FROM users WHERE email = %s AND password = %s", (email, password))
+        cur.execute("SELECT * FROM students WHERE email = %s AND password = %s", (email, password))
         user = cur.fetchone()
 
-        if user and user[5] == "student":
-            session["user_email"] = user[2]
-            session["role"] = user[5]
+        if user:
+            session["user_email"] = user[2]  # user[2] = email
+            session["role"] = "student"
             return redirect('/')
         else:
-            flash("Invalid credentials or not a student", "danger")
+            flash("Invalid credentials", "danger")
             return redirect('/login')
 
     return render_template("login.html")
 
-# -----------------------------------------
-# Admin Login
-# -----------------------------------------
-@app.route('/admin_login', methods=['GET', 'POST'])
-def admin_login():
-    if request.method == "POST":
-        email = request.form['email']
-        password = request.form['password']
+# ---------- ADMIN ROUTES ----------
 
-        cur.execute("SELECT * FROM users WHERE email = %s AND password = %s", (email, password))
-        user = cur.fetchone()
-
-        if user and user[5] == "admin":
-            session["user_email"] = user[2]
-            session["role"] = user[5]
-            return redirect('/')
-        else:
-            flash("Invalid admin credentials", "danger")
-            return redirect('/admin_login')
-
-    return render_template("admin_login.html")
-
-# -----------------------------------------
-# Admin Registration (via separate form)
-# -----------------------------------------
 @app.route('/admin_register', methods=['GET', 'POST'])
 def admin_register():
     if request.method == "POST":
@@ -127,11 +96,10 @@ def admin_register():
         email = request.form['email']
         password = request.form['password']
         confirm = request.form['confirm']
-        college = request.form['college']
         code = request.form['admin_code']
 
         if code != "MVVR":
-            flash("Invalid admin code", "danger")
+            flash("Invalid Admin Code", "danger")
             return redirect('/admin_register')
 
         if password != confirm:
@@ -139,33 +107,42 @@ def admin_register():
             return redirect('/admin_register')
 
         try:
-            cur.execute("INSERT INTO users (name, email, password, college_name, role) VALUES (%s, %s, %s, %s, %s)",
-                        (name, email, password, college, "admin"))
+            cur.execute("INSERT INTO admins (name, email, password) VALUES (%s, %s, %s)", 
+                        (name, email, password))
             conn.commit()
-            flash("Admin registered successfully! Please login.", "success")
+            flash("Admin Registered! Please login.", "success")
             return redirect('/admin_login')
         except:
-            flash("Email already exists", "danger")
+            flash("Admin Email already exists", "danger")
             return redirect('/admin_register')
 
     return render_template("admin_register.html")
 
-# -----------------------------------------
-# Logout
-# -----------------------------------------
-@app.route('/logout')
-def logout():
-    session.clear()
-    return redirect('/login')
 
-# -----------------------------------------
-# Admin PDF Upload
-# -----------------------------------------
-@app.route('/upload', methods=['GET', 'POST'])
-def upload_pdf():
-    if "user_email" not in session or session.get("role") != "admin":
-        flash("Unauthorized access", "danger")
-        return redirect('/login')
+@app.route('/admin_login', methods=['GET', 'POST'])
+def admin_login():
+    if request.method == "POST":
+        email = request.form['email']
+        password = request.form['password']
+
+        cur.execute("SELECT * FROM admins WHERE email = %s AND password = %s", (email, password))
+        admin = cur.fetchone()
+
+        if admin:
+            session["admin_email"] = admin[2]
+            session["role"] = "admin"
+            return redirect('/admin_dashboard')
+        else:
+            flash("Invalid credentials", "danger")
+            return redirect('/admin_login')
+
+    return render_template("admin_login.html")
+
+
+@app.route('/admin_dashboard', methods=['GET', 'POST'])
+def admin_dashboard():
+    if "admin_email" not in session:
+        return redirect('/admin_login')
 
     if request.method == "POST":
         course = request.form['course']
@@ -173,29 +150,31 @@ def upload_pdf():
         subject = request.form['subject']
         file = request.files['pdf']
 
-        if not file or not allowed_file(file.filename):
-            flash("Invalid file format. Only PDF allowed.", "danger")
-            return redirect('/upload')
+        if file and file.filename.endswith(".pdf"):
+            filename = secure_filename(file.filename)
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
 
-        if file.content_length and file.content_length > MAX_FILE_SIZE:
-            flash("File is too large. Max 25MB allowed.", "danger")
-            return redirect('/upload')
+            cur.execute("INSERT INTO pdfs (course_name, year, subject, file_name) VALUES (%s, %s, %s, %s)",
+                        (course, year, subject, filename))
+            conn.commit()
 
-        filename = secure_filename(file.filename)
-        filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-        file.save(filepath)
+            flash("PDF uploaded successfully", "success")
+        else:
+            flash("Only PDF files are allowed", "danger")
 
-        cur.execute("INSERT INTO pdf_notes (course, year, subject, filename, uploaded_by) VALUES (%s, %s, %s, %s, %s)",
-                    (course, year, subject, filename, session["user_email"]))
-        conn.commit()
+    return render_template("admin_dashboard.html")
 
-        flash("PDF uploaded successfully!", "success")
-        return redirect('/')
 
-    return render_template("upload.html")
+@app.route('/uploads/<filename>')
+def download_pdf(filename):
+    return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
 
-# -----------------------------------------
-# Start App
-# -----------------------------------------
-if __name__ == '__main__':
+@app.route('/logout')
+def logout():
+    session.clear()
+    return redirect('/login')
+
+# ---------- END ----------
+
+if __name__ == "__main__":
     app.run(debug=True)
