@@ -1,4 +1,3 @@
-<!-- index.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -28,15 +27,7 @@
           <li onclick="showSubjects('EEE')">EEE</li>
         </ul>
         <hr style="margin: 20px 0;">
-
         <button onclick="logout()" class="logout-button">🚪 Logout</button>
-
-      </div>
-    </div>
-    <div id="popupModal" class="popup-modal">
-      <div class="popup-content">
-       <span class="close" onclick="closePopup()">&times;</span>
-       <p id="popupMessage">Coming Soon</p>
       </div>
     </div>
 
@@ -48,11 +39,11 @@
     </div>
   </div>
 
-  <!-- Popup Modal -->
-  <div id="popupModal" class="modal">
+  <!-- PDF Viewer Modal -->
+  <div id="pdfModal" class="modal">
     <div class="modal-content">
       <span class="close-btn" onclick="closeModal()">&times;</span>
-      <iframe id="pdfFrame" src="" frameborder="0"></iframe>
+      <iframe id="pdfFrame" src="" width="100%" height="500px" frameborder="0"></iframe>
     </div>
   </div>
 
