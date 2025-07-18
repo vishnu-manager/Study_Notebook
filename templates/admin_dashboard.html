@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+    <h2>Welcome, {{ admin[0] }} (Admin)</h2>
+
+    <h3>Upload Study Material</h3>
+    <form method="POST" action="/admin_dashboard" enctype="multipart/form-data">
+        <label>Course Name:</label><br>
+        <input type="text" name="course" required><br><br>
+
+        <label>Year:</label><br>
+        <input type="text" name="year" required><br><br>
+
+        <label>Subject:</label><br>
+        <input type="text" name="subject" required><br><br>
+
+        <label>Upload PDF (Max 25MB):</label><br>
+        <input type="file" name="pdf_file" accept="application/pdf" required><br><br>
+
+        <button type="submit">Upload PDF</button>
+    </form>
+
+    <h3>Uploaded PDFs</h3>
+    <table border="1" cellpadding="5" cellspacing="0">
+        <thead>
+            <tr>
+                <th>Course</th>
+                <th>Year</th>
+                <th>Subject</th>
+                <th>PDF</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for pdf in pdfs %}
+            <tr>
+                <td>{{ pdf[1] }}</td>
+                <td>{{ pdf[2] }}</td>
+                <td>{{ pdf[3] }}</td>
+                <td><a href="{{ url_for('static', filename='pdfs/' + pdf[4]) }}" target="_blank">View</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <br><a href="/logout">Logout</a>
+</body>
+</html>
