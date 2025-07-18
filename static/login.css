@@ -1,134 +1,146 @@
-/* Base Reset */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Segoe UI', sans-serif;
 }
 
-/* Body Styling */
 body {
+    height: 100vh;
+    background: linear-gradient(135deg, #b993d6, #8ca6db);
     display: flex;
-    flex-direction: column;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
-    background: linear-gradient(to right, #d9afd9, #97d9e1);
-    padding: 16px;
+    padding: 10px;
 }
 
-/* Headings */
-h2, h3 {
-    color: #2c3e50;
-    margin-bottom: 16px;
+.login-card {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    padding: 40px 25px;
+    border-radius: 20px;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
     text-align: center;
+    color: white;
+    position: relative;
 }
 
-/* Form Styling */
-form {
-    background: white;
-    padding: 24px;
-    border-radius: 12px;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
-    width: 100%;
-    max-width: 380px;
-    animation: slideFadeIn 0.7s ease-out;
+.avatar {
+    background-color: #0b2a4a;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    margin: -70px auto 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 40px;
+    color: white;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
-/* Input Fields */
-input[type="email"],
-input[type="password"] {
-    width: 100%;
-    padding: 12px 14px;
-    margin: 10px 0;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    font-size: 16px;
-    transition: 0.3s border-color ease;
+h2 {
+    margin-bottom: 25px;
 }
 
-input:focus {
-    border-color: #3498db;
+.input-group {
+    display: flex;
+    align-items: center;
+    background: #0b2a4a;
+    border-radius: 5px;
+    padding: 10px 15px;
+    margin: 15px 0;
+}
+
+.input-group i {
+    color: white;
+    margin-right: 10px;
+}
+
+.input-group input {
+    border: none;
+    background: transparent;
+    color: white;
     outline: none;
+    flex: 1;
+    font-size: 16px;
 }
 
-/* Button Styling */
+.input-group input::placeholder {
+    color: #ccc;
+}
+
+.extras {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: #eee;
+    margin-bottom: 15px;
+}
+
+.extras a {
+    color: #dcdcdc;
+    text-decoration: none;
+    font-style: italic;
+}
+
+button[type="submit"],
 button {
     width: 100%;
     padding: 12px;
-    margin-top: 12px;
-    background-color: #3498db;
-    color: white;
     border: none;
-    border-radius: 8px;
+    border-radius: 25px;
+    background-color: white;
+    color: #0b2a4a;
     font-weight: bold;
-    font-size: 16px;
     cursor: pointer;
+    margin: 10px 0;
     transition: background-color 0.3s ease;
 }
 
 button:hover {
-    background-color: #217dbb;
+    background-color: #f1f1f1;
 }
 
-/* Paragraphs and Links */
 p {
-    margin-top: 14px;
-    text-align: center;
-    color: #555;
-    font-size: 14px;
+    font-size: 13px;
+    margin: 10px 0;
 }
 
 a {
-    color: #2980b9;
-    text-decoration: none;
-    font-weight: 500;
-}
-
-a:hover {
+    color: #fff;
     text-decoration: underline;
 }
 
-/* Divider */
 hr {
-    width: 100%;
-    margin: 32px 0 24px;
+    margin: 20px 0;
     border: none;
     height: 1px;
-    background-color: #ccc;
+    background-color: #aaa;
 }
 
-/* Animation */
-@keyframes slideFadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(30px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/* Mobile Responsive */
-@media (max-width: 500px) {
-    body {
-        padding: 10px;
+@media screen and (max-width: 480px) {
+    .login-card {
+        padding: 30px 20px;
     }
 
-    form {
-        padding: 20px 16px;
+    .avatar {
+        width: 60px;
+        height: 60px;
+        font-size: 30px;
     }
 
-    h2, h3 {
-        font-size: 18px;
+    .input-group input {
+        font-size: 14px;
     }
 
-    input, button {
-        font-size: 15px;
+    h2 {
+        font-size: 22px;
     }
 
-    p {
-        font-size: 13px;
+    button {
+        font-size: 14px;
     }
 }
