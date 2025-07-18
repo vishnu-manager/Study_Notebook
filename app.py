@@ -27,7 +27,7 @@ def home():
     student = cur.fetchone()
 
     # Fetch notes (optional or course list logic)
-    cur.execute("SELECT * FROM notes")
+    cur.execute("SELECT * FROM pdfs")
     notes = cur.fetchall()
 
     return render_template("index.html", student=student, notes=notes)
