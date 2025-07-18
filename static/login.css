@@ -1,104 +1,116 @@
-/* General Reset */
+/* Reset default styling */
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
+/* Body styling */
 body {
-  font-family: Arial, sans-serif;
-  background: linear-gradient(to right, #6dd5fa, #2980b9);
-  color: #fff;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: 100vh;
-  padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background: linear-gradient(120deg, #74ebd5, #acb6e5);
+    padding: 20px;
 }
 
-/* Heading */
-h2 {
-  margin-bottom: 20px;
-  font-size: 5vw;
-  max-width: 90%;
-  text-align: center;
-  text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
-}
-
-/* Form Container */
+/* Form container */
 form {
-  background-color: rgba(255, 255, 255, 0.1);
-  padding: 30px 5vw;
-  border-radius: 12px;
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
-  backdrop-filter: blur(5px);
-  width: 100%;
-  max-width: 400px;
+    background-color: #fff;
+    padding: 30px 40px;
+    border-radius: 12px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.15);
+    max-width: 400px;
+    width: 100%;
+    animation: fadeIn 1s ease-in-out;
 }
 
-/* Input Fields */
+/* Headings */
+h2, h3 {
+    color: #333;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+/* Input fields */
 input[type="email"],
 input[type="password"] {
-  width: 100%;
-  padding: 12px 15px;
-  margin: 10px 0;
-  border: none;
-  border-radius: 8px;
-  background-color: #ffffffcc;
-  font-size: 16px;
-  color: #333;
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    transition: border-color 0.3s ease;
 }
 
-input::placeholder {
-  color: #888;
+input[type="email"]:focus,
+input[type="password"]:focus {
+    border-color: #74ebd5;
+    outline: none;
 }
 
-/* Button */
+/* Buttons */
 button {
-  width: 100%;
-  padding: 12px;
-  margin-top: 10px;
-  border: none;
-  border-radius: 8px;
-  background-color: #1abc9c;
-  color: white;
-  font-size: 16px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
+    width: 100%;
+    padding: 12px;
+    background-color: #74ebd5;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
 }
 
 button:hover {
-  background-color: #16a085;
+    background-color: #60d0c7;
 }
 
-/* Paragraph and Links */
-p {
-  margin-top: 15px;
-  font-size: 14px;
-  text-align: center;
-}
-
+/* Links */
 a {
-  color: #f1c40f;
-  text-decoration: none;
+    color: #2b5876;
+    text-decoration: none;
+    font-weight: 500;
 }
 
 a:hover {
-  text-decoration: underline;
+    text-decoration: underline;
 }
 
-/* Responsive Heading */
-@media (max-width: 480px) {
-  h2 {
-    font-size: 6vw;
-  }
+/* Section spacing */
+p {
+    margin-top: 15px;
+    text-align: center;
+}
 
-  form {
-    padding: 25px 20px;
-  }
+/* Admin section */
+hr {
+    margin: 30px 0;
+    border: none;
+    height: 1px;
+    background: #ccc;
+}
 
-  button {
-    font-size: 14px;
-  }
+/* Animation */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Responsive design */
+@media screen and (max-width: 600px) {
+    form {
+        padding: 20px;
+    }
+
+    h2, h3 {
+        font-size: 20px;
+    }
+
+    input, button {
+        font-size: 16px;
+    }
 }
