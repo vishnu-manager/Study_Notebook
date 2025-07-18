@@ -3,6 +3,11 @@
 <head>
     <title>Login</title>
     <link rel="stylesheet" href="/static/login.css">
+    <script>
+        function redirectToAdminLogin() {
+            window.location.href = "/admin_login";
+        }
+    </script>
 </head>
 <body>
     <h2>Student Login</h2>
@@ -15,7 +20,8 @@
 
     <hr style="margin: 30px 0;">
 
-    <h2>Admin Access</h2>
-    <p>If you're an admin, please <a href="/admin_login">login here</a> or <a href="/admin_register">register here</a></p>
+    <h3>Are you an Admin?</h3>
+    <button onclick="redirectToAdminLogin()">Go to Admin Login</button>
+    <p>New admin? <a href="/admin_register">Register here</a></p>
 </body>
 </html>
