@@ -30,18 +30,37 @@ def home():
     notes = cur.fetchall()
 
     return render_template("index.html", student=student, notes=notes)
-@app.route('/admin_dashboard')
+# Ensure PDF upload folder exists
+os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
+
+# Admin Dashboard
+@app.route('/admin_dashboard', methods=['GET', 'POST'])
 def admin_dashboard():
-    if "user_email" not in session:
-        return redirect("/admin_login")
+    if 'admin_logged_in' not in session:
+        return redirect('/admin_login')
 
-    # Fetch admin details
-    cur.execute("SELECT name, email, code FROM admins WHERE email = %s", (session["user_email"],))
-    admin = cur.fetchone()
+    if request.method == 'POST':
+        course = request.form['course']
+        year = request.form['year']
+        subject = request.form['subject']
+        pdf_file = request.files['pdf_file']
 
-   
+        if pdf_file:
+            filename = secure_filename(pdf_file.filename)
+            save_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            pdf_file.save(save_path)
 
-    return render_template("admin_dashboard.html", admin=admin)    
+            cur.execute("INSERT INTO pdfs (course, year, subject, filename) VALUES (%s, %s, %s, %s)",
+                        (course, year, subject, filename))
+            conn.commit()
+            return redirect('/admin_dashboard')
+
+    cur.execute("SELECT * FROM pdfs")
+    pdfs = cur.fetchall()
+    admin_name = session.get('admin_name', 'Admin')
+    return render_template('admin_dashboard.html', admin=[admin_name], pdfs=pdfs)
+
+# Student Dashboard 
 
 
 @app.route('/register', methods=['GET', 'POST'])
