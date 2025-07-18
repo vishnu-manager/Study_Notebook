@@ -16,7 +16,11 @@ conn = psycopg2.connect(
     port="5432"
 )
 cur = conn.cursor()
+from flask import send_from_directory
 
+@app.route('/static/pdfs/<path:filename>')
+def serve_pdf(filename):
+    return send_from_directory('static/pdfs', filename)
 @app.route('/')
 def home():
     if "user_email" not in session:
