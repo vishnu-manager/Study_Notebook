@@ -36,7 +36,7 @@ app.config['UPLOAD_FOLDER'] = os.path.join('static', 'pdfs')
 # Admin Dashboard
 @app.route('/admin_dashboard', methods=['GET', 'POST'])
 def admin_dashboard():
-    if 'admin_login' not in session:
+    if "user_email" not in session:
         return redirect('/admin_login')
     # Fetch student details
     cur.execute("SELECT name, email, code FROM admins WHERE email = %s", (session["user_email"],))
