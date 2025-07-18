@@ -3,9 +3,9 @@ body {
   margin: 0;
   padding: 0;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: linear-gradient(to right, #667eea, #764ba2);
+  background: linear-gradient(to right, #3e1e68, #5078f2); /* Purple to soft blue */
   min-height: 100vh;
-  color: #fff;
+  color: #f5f5f5;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -23,6 +23,7 @@ h1 {
   text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
 }
 
+/* Container Layout */
 .container {
   display: flex;
   margin: 30px auto;
@@ -32,7 +33,7 @@ h1 {
   overflow: hidden;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
   backdrop-filter: blur(10px);
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.06);
 }
 
 /* Sidebar */
@@ -54,7 +55,7 @@ h1 {
   margin-bottom: 15px;
   border: 3px solid #fff;
   object-fit: cover;
-  box-shadow: 0 0 10px rgba(255,255,255,0.4);
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.4);
 }
 
 .profile-info {
@@ -64,10 +65,12 @@ h1 {
 
 .profile-info h2 {
   margin-bottom: 5px;
+  color: #ffda77;
 }
 
 .course-list h3 {
   margin: 20px 0 10px;
+  color: #ffd369;
 }
 
 .course-list ul {
@@ -78,36 +81,38 @@ h1 {
 .course-list li {
   padding: 8px 0;
   cursor: pointer;
-  color: #fff;
+  color: #f5f5f5;
   font-weight: 500;
-  transition: color 0.3s;
+  transition: all 0.3s;
 }
 
 .course-list li:hover {
-  color: #ffcc70;
+  color: #ffd369;
+  transform: translateX(5px);
 }
 
 .logout-button {
   margin-top: 20px;
   padding: 10px 20px;
-  background-color: #f2545b;
+  background-color: #ef476f;
   color: white;
   border: none;
   border-radius: 8px;
   cursor: pointer;
   font-weight: bold;
-  transition: background 0.3s ease;
+  transition: background 0.3s ease, transform 0.2s;
 }
 
 .logout-button:hover {
-  background-color: #d9434f;
+  background-color: #d74265;
+  transform: scale(1.05);
 }
 
 /* Right panel */
 .right-panel {
   flex: 1;
   padding: 30px;
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(255, 255, 255, 0.04);
   backdrop-filter: blur(6px);
   overflow-y: auto;
 }
@@ -115,15 +120,16 @@ h1 {
 #subjectArea h2 {
   font-size: 24px;
   margin-bottom: 15px;
+  color: #ffffff;
 }
 
 #subjectArea h3 {
   margin-top: 20px;
-  color: #ffda79;
+  color: #ffd369;
 }
 
 #subjectArea a {
-  color: #fff;
+  color: #ffffff;
   text-decoration: none;
   margin: 5px 0;
   display: inline-block;
@@ -132,7 +138,8 @@ h1 {
 
 #subjectArea a:hover {
   text-decoration: underline;
-  transform: translateX(5px);
+  transform: translateX(6px);
+  color: #ffb703;
 }
 
 /* Modal */
@@ -142,7 +149,7 @@ h1 {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0,0,0,0.6);
+  background-color: rgba(0,0,0,0.7);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -164,6 +171,7 @@ h1 {
   right: 20px;
   font-size: 22px;
   color: #000;
+  cursor: pointer;
 }
 
 /* Responsive */
@@ -177,6 +185,7 @@ h1 {
     flex-direction: row;
     justify-content: space-between;
     padding: 20px;
+    gap: 10px;
   }
 
   .profile-info {
