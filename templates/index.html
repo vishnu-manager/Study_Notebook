@@ -9,6 +9,7 @@
 </head>
 <body>
   <div class="dashboard">
+
     <!-- Sidebar -->
     <div class="sidebar">
       <img src="/static/default_profile.png" alt="Profile" class="profile-pic" />
@@ -21,19 +22,27 @@
       <div class="course-list">
         <h3>Courses</h3>
         <ul>
-          <li onclick="showSubjects('CSE')">💻 CSE</li>
-          <li onclick="showSubjects('CIVIL')">🏗️ CIVIL</li>
-          <li onclick="showSubjects('MECH')">⚙️ MECH</li>
-          <li onclick="showSubjects('EEE')">🔌 EEE</li>
+          <li title="Computer Science" onclick="showSubjects('CSE')">💻 CSE</li>
+          <li title="Civil Engineering" onclick="showSubjects('CIVIL')">🏗️ CIVIL</li>
+          <li title="Mechanical Engineering" onclick="showSubjects('MECH')">⚙️ MECH</li>
+          <li title="Electrical Engineering" onclick="showSubjects('EEE')">🔌 EEE</li>
         </ul>
         <button onclick="logout()" class="logout-button">🚪 Logout</button>
+        <button onclick="toggleDarkMode()" class="dark-toggle">🌓 Toggle Dark Mode</button>
       </div>
     </div>
 
     <!-- Main Panel -->
     <div class="main-panel" id="subjectArea">
       <h2>📘 Select a course to view subjects</h2>
+      <input type="text" id="searchInput" oninput="filterSubjects()" placeholder="🔍 Search subjects..." />
     </div>
+  </div>
+
+  <!-- Recent PDFs -->
+  <div class="recent-viewed" id="recentArea">
+    <h3>Recently Viewed</h3>
+    <ul id="recentList"></ul>
   </div>
 
   <!-- Modal Viewer -->
@@ -41,17 +50,25 @@
     <div class="modal-content">
       <span class="close-btn" onclick="closeModal()">&times;</span>
       <iframe id="pdfFrame" src="" width="100%" height="500px" frameborder="0"></iframe>
+      <div class="modal-actions">
+        <a id="downloadBtn" href="#" target="_blank" download>⬇️ Download PDF</a>
+      </div>
     </div>
   </div>
 
-  <!-- Script -->
+  <!-- Scripts -->
   <script>
+    let allLinks = [];
+    let recentPDFs = [];
+
     function showSubjects(course) {
       fetch(`/get_pdfs/${course}`)
         .then(res => res.json())
         .then(data => {
           const area = document.getElementById('subjectArea');
-          area.innerHTML = `<h2>${course} Subjects</h2>`;
+          area.innerHTML = `<h2>${course} Subjects</h2><input type="text" id="searchInput" oninput="filterSubjects()" placeholder="🔍 Search subjects..." />`;
+          allLinks = [];
+
           if (data.length === 0) {
             area.innerHTML += "<p>No PDFs found for this course.</p>";
             return;
@@ -72,20 +89,44 @@
               const link = document.createElement('a');
               link.textContent = `📄 ${item.subject}`;
               link.href = "#";
-              link.onclick = () => openModal(item.pdf_url);
               link.className = "pdf-link";
+              link.dataset.subject = item.subject.toLowerCase();
+              link.onclick = () => openModal(item.pdf_url, item.subject);
               area.appendChild(link);
+              allLinks.push(link);
             });
           }
-        })
-        .catch(() => {
-          document.getElementById('subjectArea').innerHTML = "<p>Something went wrong. Try again later.</p>";
         });
     }
 
-    function openModal(url) {
+    function filterSubjects() {
+      const input = document.getElementById('searchInput').value.toLowerCase();
+      allLinks.forEach(link => {
+        link.style.display = link.dataset.subject.includes(input) ? 'block' : 'none';
+      });
+    }
+
+    function openModal(url, subject) {
       document.getElementById('pdfFrame').src = url;
       document.getElementById('pdfModal').style.display = 'flex';
+      document.getElementById('downloadBtn').href = url;
+
+      // Save to recent
+      if (!recentPDFs.includes(subject)) {
+        recentPDFs.unshift(subject);
+        if (recentPDFs.length > 3) recentPDFs.pop();
+        renderRecent();
+      }
+    }
+
+    function renderRecent() {
+      const list = document.getElementById('recentList');
+      list.innerHTML = '';
+      recentPDFs.forEach(subject => {
+        const li = document.createElement('li');
+        li.textContent = subject;
+        list.appendChild(li);
+      });
     }
 
     function closeModal() {
@@ -95,6 +136,10 @@
 
     function logout() {
       window.location.href = "/logout";
+    }
+
+    function toggleDarkMode() {
+      document.body.classList.toggle('dark');
     }
   </script>
 </body>
