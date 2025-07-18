@@ -162,13 +162,16 @@ def admin_login():
 
 @app.route('/get_pdfs/<course>')
 def get_pdfs(course):
-    cur.execute("SELECT subject, year, filename FROM pdfs WHERE course = %s", (course,))
-    results = cur.fetchall()
-    data = [
-        {"subject": row[0], "year": row[1], "pdf_url": url_for('static', filename='pdfs/' + row[2])}
-        for row in results
-    ]
-    return jsonify(data)
+    cur.execute("SELECT year, subject, filename FROM pdfs WHERE course = %s", (course,))
+    rows = cur.fetchall()
+
+    pdfs = []
+    for row in rows:
+        year, subject, filename = row
+        pdf_url = url_for('static', filename='pdfs/' + filename)
+        pdfs.append({'year': year, 'subject': subject, 'pdf_url': pdf_url})
+
+    return jsonify(pdfs)
 
 @app.route('/logout')
 def logout():
