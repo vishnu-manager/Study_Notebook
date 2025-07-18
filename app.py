@@ -31,7 +31,7 @@ def home():
 
     return render_template("index.html", student=student, notes=notes)
 @app.route('/admin_dashboard')
-def home():
+def admin_dashboard():
     if "user_email" not in session:
         return redirect("/admin_login")
 
@@ -119,7 +119,7 @@ def admin_register():
 
     return render_template("admin_register.html")
 @app.route('/admin_login', methods=['GET', 'POST'])
-def login():
+def admin_login():
     if request.method == "POST":
         email = request.form['email']
         password = request.form['password']
