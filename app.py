@@ -31,8 +31,11 @@ def home():
     notes = cur.fetchall()
 
     return render_template("index.html", student=student, notes=notes)
+   
 # Ensure PDF upload folder exists
 app.config['UPLOAD_FOLDER'] = os.path.join('static', 'pdfs')
+# Create the folder if it doesn't exist  
+os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)    
 
 # Admin Dashboard
 @app.route('/admin_dashboard', methods=['GET', 'POST'])
