@@ -119,6 +119,30 @@ def admin_register():
         return redirect(url_for("admin_login"))
 
     return render_template("admin_register.html")
+@app.route("/admin_login", methods=["GET", "POST"])
+def admin_login():
+    if request.method == "POST":
+        email = request.form["email"]
+        password = request.form["password"]
+
+        conn = get_db_connection()
+        cur = conn.cursor()
+
+        cur.execute("SELECT * FROM admins WHERE email = %s AND password = %s", (email, password))
+        admin = cur.fetchone()
+
+        cur.close()
+        conn.close()
+
+        if admin:
+            session["user"] = email
+            session["role"] = "admin"
+            flash("Login successful", "success")
+            return redirect(url_for("admin_dashboard"))
+        else:
+            flash("Invalid email or password", "error")
+
+    return render_template("admin_login.html")
 
 
 @app.route('/logout')
