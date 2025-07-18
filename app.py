@@ -37,7 +37,7 @@ def admin_dashboard():
 
     # Fetch admin details
     cur.execute("SELECT name, email, code FROM admins WHERE email = %s", (session["user_email"],))
-    student = cur.fetchone()
+    admin = cur.fetchone()
 
    
 
