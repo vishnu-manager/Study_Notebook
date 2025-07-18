@@ -12,66 +12,70 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 100vh;
-    background: linear-gradient(120deg, #74ebd5, #acb6e5);
+    min-height: 100vh;
+    background: linear-gradient(to right, #f0f4f8, #d9e2ec);
     padding: 20px;
 }
 
 /* Form container */
 form {
-    background-color: #fff;
-    padding: 30px 40px;
-    border-radius: 12px;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.15);
-    max-width: 400px;
+    background-color: #ffffff;
+    padding: 32px;
+    border-radius: 16px;
+    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.1);
+    max-width: 420px;
     width: 100%;
-    animation: fadeIn 1s ease-in-out;
+    animation: fadeIn 0.8s ease-in-out;
 }
 
-/* Headings */
-h2, h3 {
-    color: #333;
-    margin-bottom: 20px;
+/* Heading */
+h2 {
+    color: #2a2e35;
+    margin-bottom: 24px;
     text-align: center;
+    font-size: 24px;
 }
 
 /* Input fields */
+input[type="text"],
 input[type="email"],
 input[type="password"] {
     width: 100%;
-    padding: 12px;
+    padding: 14px;
     margin: 10px 0;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    transition: border-color 0.3s ease;
+    border: 1px solid #ccd6dd;
+    border-radius: 10px;
+    transition: 0.3s ease;
+    background-color: #f8fafc;
 }
 
-input[type="email"]:focus,
-input[type="password"]:focus {
-    border-color: #74ebd5;
+input:focus {
+    border-color: #3b82f6;
     outline: none;
+    background-color: #ffffff;
 }
 
-/* Buttons */
+/* Button */
 button {
     width: 100%;
-    padding: 12px;
-    background-color: #74ebd5;
-    color: white;
+    padding: 14px;
+    background-color: #3b82f6;
+    color: #ffffff;
     border: none;
-    border-radius: 8px;
-    font-weight: bold;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 16px;
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
 
 button:hover {
-    background-color: #60d0c7;
+    background-color: #2563eb;
 }
 
 /* Links */
 a {
-    color: #2b5876;
+    color: #2563eb;
     text-decoration: none;
     font-weight: 500;
 }
@@ -80,37 +84,31 @@ a:hover {
     text-decoration: underline;
 }
 
-/* Section spacing */
+/* Text */
 p {
-    margin-top: 15px;
+    margin-top: 16px;
     text-align: center;
+    font-size: 14px;
+    color: #555;
 }
 
-/* Admin section */
-hr {
-    margin: 30px 0;
-    border: none;
-    height: 1px;
-    background: #ccc;
-}
-
-/* Animation */
+/* Fade-in animation */
 @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(-20px); }
+    from { opacity: 0; transform: translateY(20px); }
     to { opacity: 1; transform: translateY(0); }
 }
 
-/* Responsive design */
+/* Responsive Design */
 @media screen and (max-width: 600px) {
     form {
-        padding: 20px;
+        padding: 24px;
     }
 
-    h2, h3 {
+    h2 {
         font-size: 20px;
     }
 
     input, button {
-        font-size: 16px;
+        font-size: 15px;
     }
 }
