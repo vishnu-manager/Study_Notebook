@@ -1,5 +1,4 @@
 from flask import Flask, render_template, request, redirect, session, url_for, flash
-from werkzeug.security import generate_password_hash, check_password_hash
 
 import psycopg2
 import os
@@ -31,6 +30,18 @@ def home():
     notes = cur.fetchall()
 
     return render_template("index.html", student=student, notes=notes)
+@app.route('/admin_dashboard')
+def home():
+    if "user_email" not in session:
+        return redirect("/admin_login")
+
+    # Fetch admin details
+    cur.execute("SELECT name, email, code FROM admins WHERE email = %s", (session["user_email"],))
+    student = cur.fetchone()
+
+   
+
+    return render_template("admin_dashboard.html", admin=admin)    
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -87,64 +98,44 @@ def admin_register():
         # 1. Check password match
         if password != confirm:
             flash("Passwords do not match!", "error")
-            return render_template("admin_register.html")
+            return render_template('/admin_register')
+        try:
+            cur.execute("INSERT INTO admins (name, email, password, code) VALUES (%s, %s, %s, %s)", 
+                        (name, email, password, code))
+            conn.commit()
+            flash("Registered Successfully! Please login.", "success")
+            return redirect('/admin_login')
+        except:
+            flash("Email already exists", "danger")
+            return redirect('/admin_register')
+            
 
         # 2. Check for valid admin code
         if code != "MVVR":
             flash("Invalid Admin Code. Please enter correct code.", "error")
-            return render_template("admin_register.html")
+            return render_template('/admin_register')
 
-        hashed_password = generate_password_hash(password)
-
-        conn = get_db_connection()
-        cur = conn.cursor()
-
-        # 3. Check if email is already used
-        cur.execute("SELECT * FROM admins WHERE email = %s", (email,))
-        existing_admin = cur.fetchone()
-        if existing_admin:
-            flash("Email already registered!", "error")
-            cur.close()
-            conn.close()
-            return render_template("admin_register.html")
-
-        # 4. Insert admin data
-        cur.execute("""
-            INSERT INTO admins (name, email, password, code)
-            VALUES (%s, %s, %s, %s)
-        """, (name, email, hashed_password, code))
-        conn.commit()
-        cur.close()
-        conn.close()
-
-        flash("Registration successful! Please login.", "success")
-        return redirect(url_for("admin_login"))
+        
 
     return render_template("admin_register.html")
-@app.route("/admin_login", methods=["GET", "POST"])
-def admin_login():
+@app.route('/admin_login', methods=['GET', 'POST'])
+def login():
     if request.method == "POST":
-        email = request.form["email"]
-        password = request.form["password"]
-
-        conn = get_db_connection()
-        cur = conn.cursor()
+        email = request.form['email']
+        password = request.form['password']
 
         cur.execute("SELECT * FROM admins WHERE email = %s AND password = %s", (email, password))
-        admin = cur.fetchone()
+        user = cur.fetchone()
 
-        cur.close()
-        conn.close()
-
-        if admin:
-            session["user"] = email
-            session["role"] = "admin"
-            flash("Login successful", "success")
-            return redirect(url_for("admin_dashboard"))
+        if user:
+            session["user_email"] = user[2]  # user[2] = email
+            return redirect('/admin_dashboard')
         else:
-            flash("Invalid email or password", "error")
+            flash("Invalid credentials", "danger")
+            return redirect('/admin_login')
 
-    return render_template("admin_login.html")
+    return render_template("admin_login.html")    
+
 
 
 @app.route('/logout')
